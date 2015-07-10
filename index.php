@@ -12,6 +12,7 @@
 //initset
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
+
 error_reporting(-1);
 //config include
 include "config.php";
@@ -26,16 +27,12 @@ if ($result->num_rows > 0) {
 			$clsql = "SELECT clan.ClanId, clan.LastUpdateTime,clan.`Data` FROM clan WHERE clan.ClanId = 1";
 			$clresult = $conn->query($clsql);
 			if ($clresult->num_rows > 0) {
-			// output data of each row
-			while($clrow = $clresult->fetch_assoc()) {
-			$playerclan = json_decode($clrow['Data']);	
-			//}
-			//else
-			//{
-			//echo "geen clan";
+				// output data of each row
+				while($clrow = $clresult->fetch_assoc()) {
+				$playerclan = json_decode($clrow['Data']);	
+				}
 			}
-			}
-		
+
 		$avatar = (json_decode($row["Avatar"], true));
 		$playername = $avatar['avatar_name'];
 		$th = ($avatar['townhall_level']+1);
