@@ -8,23 +8,34 @@
 
 <body>
 <div id='canvas'>
+	<form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
+		<input type="text" name="username">
+		<input type="submit" value="Submit">
+	</form>
+	
 <?php
 //initset
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
-
 error_reporting(-1);
 //config include
 include "config.php";
 //player select
-$sql = "SELECT * FROM player";
+if(isset($_POST["username"])){
+	$username = $_POST["username"];
+	$sql = "SELECT * FROM player WHERE username='".$username."'";
+} else {
+	$sql = "SELECT * FROM player";
+}
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-		
+		$avatar = (json_decode($row["Avatar"], true));
+		$playername = $avatar['avatar_name'];
+		$ClanId = $avatar["alliance_id"];
 			//clan select
-			$clsql = "SELECT clan.ClanId, clan.LastUpdateTime,clan.`Data` FROM clan WHERE clan.ClanId = 1";
+			$clsql = "SELECT clan.ClanId, clan.LastUpdateTime,clan.`Data` FROM clan WHERE clan.ClanId = " . $ClanId . "";
 			$clresult = $conn->query($clsql);
 			if ($clresult->num_rows > 0) {
 				// output data of each row
@@ -32,7 +43,6 @@ if ($result->num_rows > 0) {
 				$playerclan = json_decode($clrow['Data']);	
 				}
 			}
-
 		$avatar = (json_decode($row["Avatar"], true));
 		$playername = $avatar['avatar_name'];
 		$th = ($avatar['townhall_level']+1);
