@@ -15,12 +15,26 @@ ini_set('display_startup_errors',1);
 error_reporting(-1);
 //config include
 include "config.php";
-
+//player select
 $sql = "SELECT * FROM player";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
+		
+			//clan select
+			$clsql = "SELECT clan.ClanId, clan.LastUpdateTime,clan.`Data` FROM clan WHERE clan.ClanId = 1";
+			$clresult = $conn->query($clsql);
+			if ($clresult->num_rows > 0) {
+			// output data of each row
+			while($clrow = $clresult->fetch_assoc()) {
+			$playerclan = json_decode($clrow['Data']);	
+			//}
+			//else
+			//{
+			//echo "geen clan";
+			}
+			}
 		
 		$avatar = (json_decode($row["Avatar"], true));
 		$playername = $avatar['avatar_name'];
@@ -34,10 +48,9 @@ if ($result->num_rows > 0) {
 		<li>Status: " . $row["AccountStatus"]."</li>
 		<li>Server Permissions: " . $row["AccountPrivileges"]."</li>
 		<li>Last online " . $row["LastUpdateTime"]."</li></ul>
+		<h5>Clan info " . $playername . "</h5><textarea id='styled'>" . json_encode($playerclan, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."</textarea>
 		</div>
 		<div id='ta'>";
-		//$avatar = $row["Avatar"];
-		//$avatar = json_decode($avatar);
 		echo"<h5>Avatar " . $playername . "</h5><textarea id='styled'>" . json_encode($avatar, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."</textarea>";
 		$gameobjects = $row["GameObjects"];
 		$gameobjects = json_decode($gameobjects);
