@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="style.css" />
-<title>JSON DB Updater</title>
+<title>Ultrapowa User Management</title>
 </head>
 
 <body>
